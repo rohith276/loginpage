@@ -90,6 +90,18 @@
         border-radius: 5px;
         padding: 5px;
       }
+       .pass-contnr{
+        position: relative;
+        
+      }
+      #togglePassword {
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        border: none;
+    }
     </style>
   </head>
   <body>
@@ -109,6 +121,7 @@
         />
 
         <label style="color: #31a8ff" for="password">Password:</label>
+       <div class="pass-contnr">
         <input
           type="password"
           id="password"
@@ -116,6 +129,8 @@
           placeholder="Give your password Here"
           required
         />
+        <span id="togglePassword" onclick="togglePasswordVisibility()">🫣</span>
+      </div>
 
         <button type="button" onclick="login()">Login</button>
 
@@ -142,6 +157,7 @@
         />
 
         <label style="color: #31a8ff" for="newPassword">New Password:</label>
+       <div class="pass-contnr">
         <input
           type="password"
           id="newPassword"
@@ -149,6 +165,8 @@
           name="newPassword"
           required
         />
+        <span id="togglePassword" onclick="togglePasswordVisibility()">🫣</span>
+      </div>
 
         <button type="button" onclick="register()">Regester</button>
         <button type="reset">Reset</button>
@@ -180,6 +198,7 @@
           { username: "Rohith_Sebastian", password: "rohith@1510" },
           { username: "rohithMom", password: "sita123" },
           { username: "Dr.Heroin", password: "2020coronabatch" },
+           { username: "surendra", password: "surirohi123" },
         ];
 
         if (!localStorage.getItem("registeredUsers")) {
@@ -215,6 +234,19 @@
           modal.callback = null;
         }
       }
+
+       function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("password");
+        var togglePasswordIcon = document.getElementById("togglePassword");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePasswordIcon.textContent = "😳";
+        } else {
+            passwordInput.type = "password";
+            togglePasswordIcon.textContent = "😌";
+        }
+    }
 
       function login() {
         var username = document.getElementById("username").value;
