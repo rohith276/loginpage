@@ -129,7 +129,7 @@
           placeholder="Give your password Here"
           required
         />
-        <span id="togglePassword" onclick="togglePasswordVisibility()">🫣</span>
+        <span id="toggleNewPassword" onclick="togglePasswordVisibility('newPassword', 'toggleNewPassword')">🫣</span>
       </div>
 
         <button type="button" onclick="login()">Login</button>
@@ -165,9 +165,8 @@
           name="newPassword"
           required
         />
-        <span id="togglePassword" onclick="togglePasswordVisibility()">🫣</span>
+    <span id="toggleNewPassword" onclick="togglePasswordVisibility('newPassword', 'toggleNewPassword')">🫣</span>
       </div>
-
         <button type="button" onclick="register()">Regester</button>
         <button type="reset">Reset</button>
         <br />
@@ -235,9 +234,9 @@
         }
       }
 
-       function togglePasswordVisibility() {
-        var passwordInput = document.getElementById("password");
-        var togglePasswordIcon = document.getElementById("togglePassword");
+       function togglePasswordVisibility(inputId, toggleIconId) {
+        var passwordInput = document.getElementById(inputId);
+        var togglePasswordIcon = document.getElementById(toggleIconId);
 
         if (passwordInput.type === "password") {
             passwordInput.type = "text";
@@ -247,6 +246,7 @@
             togglePasswordIcon.textContent = "😌";
         }
     }
+
 
       function login() {
         var username = document.getElementById("username").value;
