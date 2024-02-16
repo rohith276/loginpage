@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Page</title>
+    <style>
+      * {
+        font-family: verdana;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        text-align: center;
+        margin-top: 100px;
+        background-color: #001e36;
+      }
+
+      form {
+        max-width: 300px;
+        margin: 0 auto;
+        background-color: #001e36;
+        border: 2px solid #31a8ff;
+        padding: 75px;
+        border-radius: 50px;
+        color: #ddd;
+      }
+
+      input {
+        width: 100%;
+        padding: 8px;
+        margin: 5px 0;
+        box-sizing: border-box;
+        border-radius: 5px;
+        background-color: #001e36;
+        border: 2px solid #31a8ff;
+        color: #f4f4f4;
+      }
+
+      input:focus {
+        color: #31a8ff;
+        outline: 2px solid #ddd;
+      }
+
+      button {
+        background-color: #001e36;
+        border: 2px solid #31a8ff;
+        border-radius: 5px;
+        color: #f4f4f4;
+        padding: 10px;
+        margin: 5px;
+        justify-content: space-between;
+        height: 50px;
+      }
+      button:hover {
+        background-color: #31a8ff;
+        border: 2px solid #001;
+        transition: 1s;
+      }
+      ::placeholder {
+        color: #f4f4f4;
+        justify-content: space-around;
+        padding-left: 10px;
+        opacity: 0.5;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        border-radius: 5px;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        background-color: #31a8ff;
+        border: 1px solid #001e36;
+        z-index: 1;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .modal-content {
+        text-align: center;
+      }
+
+      .close {
+        cursor: pointer;
+        color: #f4f4f4;
+      }
+      span {
+        border: 2px solid #001e36;
+        border-radius: 5px;
+        padding: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="loginForm">
+      <form id="loginForm">
+        <h2>
+          Login Here to check
+          <strong style="color: #31a8ff">My</strong> Portfolio
+        </h2>
+        <label style="color: #31a8ff" for="username">Username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Your Username Here"
+          required
+        />
+
+        <label style="color: #31a8ff" for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Give your password Here"
+          required
+        />
+
+        <button type="button" onclick="login()">Login</button>
+
+        <button type="reset">Reset</button>
+        <br />
+        <h4>
+          Not a friend of <strong style="color: #31a8ff">Mine</strong>? We can
+          be now by regestration
+        </h4>
+        <button type="button" onclick="showRegistrationForm()">Regester</button>
+      </form>
+    </div>
+
+    <div id="registrationForm" style="display: none">
+      <form id="registerForm">
+        <h2>Registration Form</h2>
+        <label style="color: #31a8ff" for="newUsername">New Username:</label>
+        <input
+          type="text"
+          id="newUsername"
+          placeholder="Username"
+          name="newUsername"
+          required
+        />
+
+        <label style="color: #31a8ff" for="newPassword">New Password:</label>
+        <input
+          type="password"
+          id="newPassword"
+          placeholder="Try which is hard to guess! ;)"
+          name="newPassword"
+          required
+        />
+
+        <button type="button" onclick="register()">Regester</button>
+        <button type="reset">Reset</button>
+        <br />
+        <h4>Are we Already friends? Then Login!</h4>
+
+        <button type="button" onclick="showLoginForm()">Login</button>
+      </form>
+    </div>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">Get In</span>
+        <p id="modalMessage"></p>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("registrationForm").style.display = "none";
+
+        initializeDefaultUsers();
+
+        loadUsers();
+      });
+
+      function initializeDefaultUsers() {
+        var defaultUsers = [
+          { username: "exampleUser", password: "examplePassword" },
+          { username: "Rohith_Sebastian", password: "rohith@1510" },
+          { username: "rohithMom", password: "sita123" },
+          { username: "Dr.Heroin", password: "2020coronabatch" },
+        ];
+
+        if (!localStorage.getItem("registeredUsers")) {
+          localStorage.setItem("registeredUsers", JSON.stringify(defaultUsers));
+        }
+      }
+
+      function loadUsers() {
+        var savedUsers = localStorage.getItem("registeredUsers");
+        window.userDatabase = savedUsers ? JSON.parse(savedUsers) : [];
+      }
+
+      function saveUsers() {
+        localStorage.setItem("registeredUsers", JSON.stringify(userDatabase));
+      }
+
+      function showModal(message, callback) {
+        var modal = document.getElementById("myModal");
+        var modalMessage = document.getElementById("modalMessage");
+
+        modalMessage.textContent = message;
+        modal.style.display = "flex";
+
+        modal.callback = callback;
+      }
+
+      function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+
+        if (modal.callback) {
+          modal.callback();
+          modal.callback = null;
+        }
+      }
+
+      function login() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+
+        if (username.trim() === "" || password.trim() === "") {
+          showModal(
+            "Login unsuccessful. Please enter both username and password."
+          );
+          return;
+        }
+
+        var isValidUser = userDatabase.some(function (user) {
+          return user.username === username && user.password === password;
+        });
+
+        if (isValidUser) {
+          showModal("Welcome Friend! This is all about me!", function () {
+            window.location.href =
+              "https://rohith276.github.io/rohith_profile/";
+          });
+        } else {
+          showModal(
+            "Login unsuccessful. Invalid username or password. Please try again."
+          );
+        }
+      }
+
+      function showRegistrationForm() {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("registrationForm").style.display = "block";
+
+        document.getElementById("loginForm").reset();
+      }
+
+      function register() {
+        var newUsername = document.getElementById("newUsername").value;
+        var newPassword = document.getElementById("newPassword").value;
+
+        if (newUsername.trim() === "" || newPassword.trim() === "") {
+          showModal(
+            "Registration unsuccessful. Please enter both username and password."
+          );
+          return;
+        }
+
+        var isExistingUser = userDatabase.some(function (user) {
+          return user.username === newUsername;
+        });
+
+        if (isExistingUser) {
+          showModal(
+            "Registration unsuccessful. Username already exists. Please choose a different username."
+          );
+        } else {
+          userDatabase.push({ username: newUsername, password: newPassword });
+          saveUsers();
+
+          showModal(
+            "Welcome! Registration successful! You can now login.",
+            function () {
+              document.getElementById("registrationForm").style.display =
+                "none";
+              document.getElementById("loginForm").style.display = "block";
+            }
+          );
+        }
+      }
+      function showLoginForm() {
+        document.getElementById("registrationForm").style.display = "none";
+        document.getElementById("loginForm").style.display = "block";
+
+        document.getElementById("registerForm").reset();
+      }
+    </script>
+  </body>
+</html>
