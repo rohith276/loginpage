@@ -94,7 +94,8 @@
         position: relative;
         
       }
-      #togglePassword {
+      #togglePassword ,
+      #toggleNewPassword{
         position: absolute;
         top: 50%;
         right: 8px;
@@ -129,7 +130,7 @@
           placeholder="Give your password Here"
           required
         />
-        <span id="toggleNewPassword" onclick="togglePasswordVisibility('newPassword', 'toggleNewPassword')">🫣</span>
+        <span id="togglePassword" onclick="togglePasswordVisibility('newPassword', 'toggleNewPassword')">🫣</span>
       </div>
 
         <button type="button" onclick="login()">Login</button>
